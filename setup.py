@@ -19,7 +19,7 @@ setup(
     keywords="redis rollout",
     packages=find_packages(),
     install_requires=['distribute', 'redis'],
-    test_suite="test_proclaim",
+    test_suite="tests",
     classifiers=[
         "Development Status :: 5 - Alpha",
         "Intended Audience :: Developers",
