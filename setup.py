@@ -1,7 +1,7 @@
-try:
-    from setuptools.core import setup
-except ImportError:
-    from distutils.core import setup
+#!/usr/bin/env python
+# -*- coding: utf-8 -*-
+from setuptools import setup, find_packages
+
 
 setup(
     name="proclaim",
@@ -17,13 +17,15 @@ setup(
     url="http://github.com/asenchi/proclaim",
     download_url="http://github.com/asenchi/proclaim/downloads",
     keywords="redis rollout",
-    classifiers = [
+    packages=find_packages(),
+    install_requires=['distribute', 'redis'],
+    test_suite="test_proclaim",
+    classifiers=[
         "Development Status :: 5 - Alpha",
         "Intended Audience :: Developers",
         "Intended Audience :: Web Developers",
         "License :: OSI Approved :: MIT License",
         "Operating System :: OS Independant",
         "Topic :: Software Development"
-    ],
-    py_modules=["proclaim"],
+    ]
 )
