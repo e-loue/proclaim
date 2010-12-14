@@ -48,3 +48,12 @@ class TestProclaim(unittest.TestCase):
     def test_deactivate_percentage(self):
         self.proclaim.deactivate_percentage("f3", 25)
         assert not self.proclaim.is_active("f3", jim)
+
+    def test_activate_session(self):
+        self.proclaim.activate_session("f4", "60f9fe909b39f3a2816ddf567c8ee560")
+        assert self.proclaim.is_active("f4", None, "60f9fe909b39f3a2816ddf567c8ee560")
+
+    def test_deactivate_session(self):
+        self.proclaim.deactivate_session("f4", "60f9fe909b39f3a2816ddf567c8ee560")
+        assert not self.proclaim.is_active("f4", None, "60f9fe909b39f3a2816ddf567c8ee560")
+ 

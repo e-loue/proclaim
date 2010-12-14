@@ -24,12 +24,20 @@ class Proclaim(object):
     def deactivate_user(self, feature, user):
         self.redis.srem(_user_key(feature), user.id)
 
+    def activate_session(self, feature, session):
+        self.redis.sadd(_session_key(feature), session)
+
+    def deactivate_session(self, feature, session):
+        self.redis.srem(_session_key(feature), session)
+
     def define_group(self, group, *users):
         self.groups[group] = []
         for user in users:
             self.groups[group].append(user.id)
 
-    def is_active(self, feature, user):
+    def is_active(self, feature, user, session=None):
+        if session:
+            return self._user_with_active_session(feature, session)
         if self._user_in_active_group(feature, user):
             return True
         if self._user_active(feature, user):
@@ -58,6 +66,11 @@ class Proclaim(object):
             return True
         return False
 
+    def _user_with_active_session(self, feature, session):
+        if self.redis.sismember(_session_key(feature), session):
+            return True
+        return False
+
     def _user_within_active_percentage(self, feature, user):
         if self.redis.exists(_percentage_key(feature)):
             percentage = self.redis.get(_percentage_key(feature))
@@ -73,6 +86,9 @@ def _group_key(name):
 
 def _user_key(name):
     return "%s:users" % (_key(name))
+
+def _session_key(name):
+    return "%s:sessions" % (_key(name))
 
 def _percentage_key(name):
     return "%s:percentage" % (_key(name))
